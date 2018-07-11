@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Favorite artists</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>artist Search</h1>
+
+    <!-- We'll be dumping our JSON contents in here -->
+
+
+
+    <!-- This form will be where users input data about the artists -->
+    <form id="artist-form">
+      <label for="artist-input">Search for an artist</label>
+      <input type="text" id="artist-input">
+      <br>
+
+      <!-- This button will trigger our AJAX call -->
+      <input id="find-artist" type="submit" value="Search Songs by Artist">
+    </form>
+
+    <div id="artist-view"></div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      // This .on("click") function will trigger the AJAX Call
+      $("#find-artist").on("click", function (event) {
+
+        // event.preventDefault() can be used to prevent an event's default behavior.
+        // Here, it prevents the submit button from trying to submit a form when clicked
+        event.preventDefault();
+
+        // Here we grab the text from the input box
+        var artist = $("#artist-input").val();
+        var limit = "&limit=5";
+
+        // Here we construct our URL
+        var queryURL = "https://itunes.apple.com/search?term=" + artist + limit;
+
+        // Write code between the dashes below to hit the queryURL with $ajax, then take the response data
+        // and display it in the div with an id of artist-view
+
+        // ------YOUR CODE GOES IN THESE DASHES. DO NOT MANUALLY EDIT THE HTML ABOVE.
+
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).then(function (response) {
+          response = JSON.parse(response);
+          console.log("response:", response);
+          console.log("length:", response.resultCount);
+          for (var i = 0; i < response.resultCount; i++) {
+            $("#artist-view").append("<p>" + response.results[i].trackName + "</p>");
+          }
+        }).catch(function (e) {
+          console.log('error', e);
+        });
+
+        // -----------------------------------------------------------------------
+
+      });
+    </script>
+  </div>
+</body>
+
+</html>
